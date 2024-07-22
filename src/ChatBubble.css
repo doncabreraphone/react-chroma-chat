@@ -1,0 +1,97 @@
+.chat-container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    overflow-y: hidden;
+    justify-content: flex-end;
+    min-height: 100vh;
+    margin-left: 90px;
+}
+.chat-bubble {
+    font-family: Arial, Helvetica, sans-serif;
+    border-radius: 30px;
+    padding: .8em 1.2em .8em 1.2em;
+    max-width: 450px;
+    box-sizing: border-box;
+    font-weight: 500;
+    font-size: 19px;
+    background: #fff;
+    margin: .65em 0;
+    word-wrap: break-word;
+    position: absolute; /* Necesario para el pseudo-elemento */
+    z-index: 10;
+    transition: opacity 1s ease-out, top 0.5s ease-in-out;
+    animation: slide-up 0.5s ease-in-out forwards;
+    bottom: 97px;
+    box-shadow: 0 5px 3px #b6b6b6;
+  }
+  
+  .fade-out {
+    opacity: 0;
+  }
+  
+
+.animating {
+    animation: slide-up 0.5s ease-in-out;
+    transition: all 1s forwards;
+}
+
+/* Piquito hacia abajo desde la esquina inferior izquierda */
+.chat-bubble::before {
+    content: "";
+    position: absolute;
+    bottom: -10px; /* Ajusta para que el piquito esté en la posición deseada */
+    left: 40px; /* Ajusta para que el piquito esté alineado con el borde del bubble */
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-top: 10px solid #fff; /* Color del piquito, igual al del bubble */
+}
+
+
+/* Piquito hacia abajo desde la esquina inferior izquierda */
+.chat-bubble::before {
+    content: "";
+    position: absolute;
+    bottom: -14px; /* Ajusta para que el piquito esté en la posición deseada */
+    left: 30px; /* Ajusta para que el piquito esté alineado con el borde del bubble */
+    width: 0;
+    height: 0;
+    border-left: 1px solid transparent;
+    border-right: 15px solid transparent;
+    border-top: 14px solid #fff; /* Color del piquito, igual al del bubble */
+}
+
+.chat-bubble.warning,
+.chat-bubble.info {
+    color: #fff;
+}
+
+.chat-bubble.warning {
+    background: red;
+}
+
+.chat-bubble.info {
+    background-color: blue;
+}
+
+.chat-bubble.warning::before {
+    border-top-color: red; /* Color del piquito, igual al del bubble */
+}
+
+.chat-bubble.info::before {
+    border-top-color: blue; /* Color del piquito, igual al del bubble */
+}
+
+@keyframes slide-up {
+    from {
+        transform: translateY(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateY(-90px);
+        opacity: 1;
+    }
+}
