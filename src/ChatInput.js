@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 
-const ChatInput = ({ onSend, inputRef, onHeightChange }) => {
+const ChatInput = ({ onSend, inputRef }) => {
   const [input, setInput] = useState('');
   const [isVisible, setIsVisible] = useState(false);
   const [inputClass, setInputClass] = useState('');
@@ -25,23 +25,7 @@ const ChatInput = ({ onSend, inputRef, onHeightChange }) => {
     return () => {
       window.removeEventListener('keydown', handleKeydown);
     };
-  }, [textAreaRef]);
-
-  useEffect(() => {
-    const textAreaElement = textAreaRef.current;
-    if (textAreaElement) {
-      const resizeObserver = new ResizeObserver(() => {
-        console.log(`Textarea height: ${textAreaElement.offsetHeight}px`);
-        onHeightChange(textAreaElement.offsetHeight); // Pasar la altura al componente padre
-      });
-
-      resizeObserver.observe(textAreaElement);
-
-      return () => {
-        resizeObserver.unobserve(textAreaElement);
-      };
-    }
-  }, [onHeightChange]);
+  }, []);
 
   const handleKeyPress = (e) => {
     if (!isVisible) {

@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import ChatInput from './ChatInput';
 import ChatBubble from './ChatBubble';
 import './App.css';
@@ -6,13 +6,10 @@ import './App.css';
 const ChatApp = () => {
   const inputRef = useRef(null);
   const [messages, setMessages] = useState([]);
-  const [textAreaHeight, setTextAreaHeight] = useState(0);
 
   const handleSend = (message, messageClass) => {
-    // Calcular el marginBottom basado en la altura del textarea
-    const marginBottom = textAreaHeight > 50 ? '5.5em' : '4em';
+    const marginBottom = '4.5em';
 
-    // Incrementar el marginBottom de todos los mensajes existentes
     setMessages(prevMessages =>
       prevMessages.map(msg => ({
         ...msg,
@@ -20,22 +17,31 @@ const ChatApp = () => {
       }))
     );
 
-    // Agregar el nuevo mensaje después de 500ms
     setTimeout(() => {
       setMessages(prevMessages => [
         ...prevMessages,
-        { text: message, type: messageClass, marginBottom: '0em' }
+        { text: message, type: messageClass, marginBottom, delay: messages.length > 0 ? messages.length * 2300 : 1700 }
       ]);
     }, 0);
   };
 
-  const handleHeightChange = (height) => {
-    setTextAreaHeight(height);
+  const handleRemove = (index) => {
+    setMessages(prevMessages => prevMessages.filter((_, i) => i !== index));
   };
 
-  const handleRemove = (index) => {
-    setMessages((prevMessages) => prevMessages.filter((_, i) => i !== index));
-  };
+  useEffect(() => {
+    const handleKeydown = (e) => {
+      if (e.ctrlKey && e.key === '`') {
+        inputRef.current && inputRef.current.focus();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeydown);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeydown);
+    };
+  }, []);
 
   return (
     <div className="chat-container">
@@ -45,11 +51,12 @@ const ChatApp = () => {
           text={msg.text}
           type={msg.type}
           marginBottom={msg.marginBottom}
+          delay={msg.delay}
           onRemove={() => handleRemove(index)}
         />
       ))}
       <div id="textareaCSS">
-        <ChatInput onSend={handleSend} inputRef={inputRef} onHeightChange={handleHeightChange} />
+        <ChatInput onSend={handleSend} inputRef={inputRef} />
       </div>
     </div>
   );

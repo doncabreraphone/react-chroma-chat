@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import './ChatBubble.css';
 
-const ChatBubble = ({ text, type, marginBottom, onRemove }) => {
+const ChatBubble = ({ text, type, marginBottom, delay, onRemove }) => {
   const [fading, setFading] = useState(false);
 
   useEffect(() => {
     const timer = setTimeout(() => {
       setFading(true);
-      setTimeout(onRemove, 4000);
-    }, 5000);
+    //   setTimeout(onRemove, 4000);
+    }, delay);
 
     return () => clearTimeout(timer);
-  }, [onRemove]);
+  }, [delay, onRemove]);
 
   return (
     <div
